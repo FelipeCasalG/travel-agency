@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\City;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CityController extends Controller
@@ -45,7 +44,14 @@ class CityController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
-        $validator = Validator::make($request->all(),
+        $city = City::find($id);
+
+        if (! $city) {
+            return response()->json(['error' => 'City not found'], 404);
+        }
+
+        $validator = Validator::make(
+            $request->all(),
             [
                 'name' => 'required|string|max:255|unique:cities,name',
             ]
@@ -57,15 +63,9 @@ class CityController extends Controller
             ], 400);
         }
 
-        $city = City::find($id);
-
-        if ($city) {
-            $city->name = $request->input('name');
-            $city->save();
-            return response()->json($city, 200);
-        } else {
-            return response()->json(['error' => 'City not found'], 404);
-        }
+        $city->name = $request->input('name');
+        $city->save();
+        return response()->json($city, 200);
     }
 
     public function destroy($id): JsonResponse
@@ -78,5 +78,4 @@ class CityController extends Controller
             return response()->json(['error' => 'City not found'], 404);
         }
     }
-    
 }
