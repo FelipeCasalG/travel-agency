@@ -11,10 +11,14 @@ class CityController extends Controller
 {
     public function index()
     {
+        // use ajax to fetch data
+    
+        
+
         return view('cities.index');
     }
 
-    public function all()
+    public function getAll()
     {
         $cities = City::all();
         return response()->json(['cities' => $cities]);
