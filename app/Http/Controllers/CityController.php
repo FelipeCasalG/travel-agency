@@ -2,22 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCityRequest;
 use App\Models\City;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CityController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('cities.index');
     }
 
-    public function getAll()
+    public function getAll(): JsonResponse
     {
         $cities = City::paginate(8);
-        return response()->json(['cities' => $cities]);
+        return response()->json(['cities' => $cities], JsonResponse::HTTP_OK);
     }
 
     public function store(Request $request): JsonResponse
@@ -32,50 +35,37 @@ class CityController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'error' => $validator->messages()
-            ], 400);
+            ], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         $city = City::create([
-            'name' => $request->input('name'),
+            'name' => $request->string('name')->toString(),
         ]);
 
-        return response()->json($city, 201);
+        return response()->json($city, JsonResponse::HTTP_CREATED);
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(StoreCityRequest $request, int $id): JsonResponse
     {
-        $city = City::find($id);
-
-        if (! $city) {
-            return response()->json(['error' => 'City not found'], 404);
+        try {
+            $city = City::findOrFail($id);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'City not found'], JsonResponse::HTTP_NOT_FOUND);
         }
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|string|max:255|unique:cities,name',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->messages()
-            ], 400);
-        }
-
-        $city->name = $request->input('name');
+        $city->name = $request->string('name')->toString();
         $city->save();
-        return response()->json($city, 200);
+        return response()->json($city, JsonResponse::HTTP_OK);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $city = City::find($id);
-        if ($city) {
+        try {
+            $city = City::findOrFail($id);
             $city->delete();
-            return response()->json('City deleted successfully', 200);
-        } else {
-            return response()->json(['error' => 'City not found'], 404);
+            return response()->json('City deleted successfully', JsonResponse::HTTP_OK);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'City not found'], JsonResponse::HTTP_NOT_FOUND);
         }
     }
 }
