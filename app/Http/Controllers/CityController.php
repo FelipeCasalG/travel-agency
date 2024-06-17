@@ -11,10 +11,6 @@ class CityController extends Controller
 {
     public function index()
     {
-        // use ajax to fetch data
-    
-        
-
         return view('cities.index');
     }
 
