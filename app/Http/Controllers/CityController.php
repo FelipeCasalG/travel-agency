@@ -16,7 +16,7 @@ class CityController extends Controller
 
     public function getAll()
     {
-        $cities = City::all();
+        $cities = City::paginate(8);
         return response()->json(['cities' => $cities]);
     }
 

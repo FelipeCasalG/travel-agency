@@ -38,6 +38,8 @@
                                 <!-- Data is fetched using AJAX -->
                             </tbody>
                         </table>
+                        <div id="pagination" class="bg-gray-50">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,19 +49,15 @@
 </x-layout>
 
 <script>
-    $(document).ready(function() {
-
-        fetchCities();
-
-        function fetchCities() {
-            $.ajax({
-                type: 'GET',
-                url: '/api/cities',
-                success: function(response) {
-                    $('tbody').html("");
-                    $.each(response.cities, function(key, item) {
-                        $('tbody').append(
-                            '<tr>\
+    function fetchCities(page) {
+        $.ajax({
+            type: 'GET',
+            url: '/api/cities?page=' + page,
+            success: function(response) {
+                $('tbody').html("");
+                $.each(response.cities.data, function(key, item) {
+                    $('tbody').append(
+                        '<tr>\
                             <x-table-main-data>' + item.id + '</x-main-table-data>\
                             <x-table-data>' + item.name + '</x-table-data>\
                             <x-table-data>' + item.incoming_flights_count + '</x-table-data>\
@@ -69,11 +67,53 @@
                             <x-table-button href="/cities/' + item.id + '/delete">Delete</x-table-button>\
                             </x-table-data>\
                             </tr>'
+                    );
+                });
+
+                // Update pagination links
+                $('#pagination').html('');
+                if (response.cities.prev_page_url || response.cities.next_page_url) {
+                    $('#pagination').append(
+                        '<nav class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6"\
+                                aria-label="Pagination">\
+                                <div class="hidden sm:block">\
+                                    <p class="text-sm text-gray-700">Showing<span class="font-medium"> ' + response.cities.from + ' \
+                                        </span>to<span class="font-medium"> ' + response.cities.to + ' \
+                                        </span>of<span class="font-medium"> ' + response.cities.total + ' \
+                                        </span>results</p>\
+                                </div>\
+                                <div id="paginationBtn" class="flex flex-1 justify-between sm:justify-end">\
+                                </div>\
+                            </nav>'
+                    );
+                    if (response.cities.prev_page_url) {
+                        $('#paginationBtn').append(
+                            '<a onclick="fetchCities(' + (response.cities.current_page - 1) +
+                            ')"\
+                                class="relative inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus-visible:outline-offset-0">Previous</a>'
+                        );
+                    } else {
+                        $('#paginationBtn').append(
+                            '<a class="relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-gray-200 focus-visible:outline-offset-0 cursor-not-allowed">Previous</a>'
                         );
                     }
-                    );
+                    if (response.cities.next_page_url) {
+                        $('#paginationBtn').append(
+                            '<a onclick="fetchCities(' + (response.cities.current_page + 1) +
+                            ')"\
+                                class="relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus-visible:outline-offset-0">Next</a>'
+                        );
+                    } else {
+                        $('#paginationBtn').append(
+                            '<a class="relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-gray-200 focus-visible:outline-offset-0 cursor-not-allowed">Next</a>'
+                        );
+                    }
                 }
-            });
-        }
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        fetchCities(1);
     });
 </script>
