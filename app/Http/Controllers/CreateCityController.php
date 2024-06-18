@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 class CreateCityController extends Controller
 {
-    public function execute(StoreCityRequest $request, Responder $responder): JsonResponse
+    public function __invoke(StoreCityRequest $request, Responder $responder): JsonResponse
     {
         $city = City::create([
             'name' => $request->string('name')->toString(),

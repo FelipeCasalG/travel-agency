@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class DestroyCityController extends Controller
 {
-    public function execute(int $id, Responder $responder): JsonResponse
+    public function __invoke(int $id, Responder $responder): JsonResponse
     {
         try {
             $city = City::findOrFail($id);

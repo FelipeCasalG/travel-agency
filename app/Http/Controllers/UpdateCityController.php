@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class UpdateCityController extends Controller
 {
-    public function execute(StoreCityRequest $request, int $id, Responder $responder): JsonResponse
+    public function __invoke(StoreCityRequest $request, int $id, Responder $responder): JsonResponse
     {
         try {
             $city = City::findOrFail($id);

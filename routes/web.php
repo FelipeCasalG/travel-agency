@@ -6,4 +6,4 @@ use App\Http\Controllers\ViewCitiesController;
 
 Route::view('/', 'dashboard');
 
-Route::get('/cities', [ViewCitiesController::class, 'execute']);
+Route::get('/cities', ViewCitiesController::class);

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class GetAllCitiesController extends Controller
 {
-    public function execute(Request $request, Responder $responder): JsonResponse
+    public function __invoke(Request $request, Responder $responder): JsonResponse
     {
         $sort = $request->query('sort', 'id');
         $order = $request->query('order', 'asc') === 'desc' ? 'desc' : 'asc';
