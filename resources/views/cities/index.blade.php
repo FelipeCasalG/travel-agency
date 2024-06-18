@@ -16,10 +16,10 @@
                             <thead class="bg-gray-50">
                                 <tr>
                                     <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6" onClick="setSorting('id')">
                                         Id</th>
                                     <th scope="col"
-                                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
+                                        class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" onClick="setSorting('name')">Name</th>
                                     <th scope="col"
                                         class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Incoming
                                         flights</th>
@@ -53,10 +53,19 @@
 </x-layout>
 
 <script>
+    let sort = null;
+    let order = null;
     function fetchCities(page) {
+        url = '/api/cities?page=' + page;
+        if (sort) {
+            url += '&sort=' + sort;
+        }
+        if (order) {
+            url += '&order=' + order;
+        }
         $.ajax({
             type: 'GET',
-            url: '/api/cities?page=' + page,
+            url: url,
             success: function(response) {
                 $('tbody').html("");
                 $.each(response.data, function(key, item) {
@@ -116,6 +125,16 @@
         })
     }
 
+    function setSorting(column) {
+        if (sort == column) {
+            order = order == 'asc' ? 'desc' : 'asc';
+        } else {
+            sort = column;
+            order = 'asc';
+        }
+        fetchCities(1);
+    }
+
     function deleteCity(id) {
         $.ajax({
             type: 'DELETE',
@@ -141,6 +160,8 @@
     }
 
     $(document).ready(function() {
+        sort = 'id';
+        order = 'asc';
         fetchCities(1);
     });
 </script>
