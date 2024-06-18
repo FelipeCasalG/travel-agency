@@ -30,9 +30,9 @@ class StoreCityRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        $responder = app(Responder::class);
-        throw new HttpResponseException($responder->error(JsonResponse::HTTP_BAD_REQUEST, 'Invalid input.')->respond());
-    }
+    // protected function failedValidation(Validator $validator)
+    // {
+    //     $responder = app(Responder::class);
+    //     throw new HttpResponseException($responder->error(JsonResponse::HTTP_BAD_REQUEST, 'Invalid input.')->respond());
+    // }
 }
