@@ -7,8 +7,6 @@ use App\Models\City;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CityController extends Controller
 {
@@ -23,21 +21,8 @@ class CityController extends Controller
         return response()->json(['cities' => $cities], JsonResponse::HTTP_OK);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreCityRequest $request): JsonResponse
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|string|max:255|unique:cities,name',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->messages()
-            ], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
         $city = City::create([
             'name' => $request->string('name')->toString(),
         ]);

@@ -7,11 +7,8 @@
             <div class="sm:flex-auto">
                 <p class="mt-2 text-sm text-gray-700">Manage the cities where the airlines and their flights operate.</p>
             </div>
-            <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                <x-button href="/cities/create">Add city</x-button>
-            </div>
         </div>
-        <div class="mt-8 flow-root">
+        <div class="my-8 flow-root">
             <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                     <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
@@ -44,8 +41,15 @@
                 </div>
             </div>
         </div>
+        <div class="flex justify-end">
+            <div class="flex-auto">
+                <x-input class="w-full" placeholder="City name..."></x-input>
+            </div>
+            <div class="mt-4 sm:ml-2 sm:mt-0 flex-auto">
+                <x-button onclick="createCity()">Add city</x-button>
+            </div>
+        </div>
     </div>
-
 </x-layout>
 
 <script>
@@ -64,7 +68,7 @@
                             <x-table-data>' + item.outgoing_flights_count + '</x-table-data>\
                             <x-table-data>\
                             <x-table-button href="/cities/' + item.id + '/edit">Edit</x-table-button>\
-                            <x-table-button href="/cities/' + item.id + '/delete">Delete</x-table-button>\
+                            <x-table-button onclick="deleteCity(' + item.id + ')">Delete</x-table-button>\
                             </x-table-data>\
                             </tr>'
                     );
@@ -111,6 +115,30 @@
                 }
             }
         })
+    }
+
+    function deleteCity(id) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/cities/' + id,
+            success: function(response) {
+                fetchCities(1);
+            }
+        });
+    }
+
+    function createCity() {
+        var name = $('input').val();
+        $.ajax({
+            type: 'POST',
+            url: '/api/cities',
+            data: {
+                name: name
+            },
+            success: function(response) {
+                fetchCities(1);
+            }
+        });
     }
 
     $(document).ready(function() {
