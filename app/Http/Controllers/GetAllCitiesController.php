@@ -6,11 +6,16 @@ use App\Models\City;
 use App\Transformers\CityTransformer;
 use Flugg\Responder\Contracts\Responder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class GetAllCitiesController extends Controller
 {
-    public function execute(Responder $responder): JsonResponse
+    public function execute(Request $request, Responder $responder): JsonResponse
     {
-        return $responder->success(City::paginate(8), new CityTransformer())->respond();
+        $sort = $request->query('sort', 'id');
+        $order = $request->query('order', 'asc');
+        // sort and paginate by 8 the cities
+        $cities = City::orderBy($sort, $order)->paginate(8);
+        return $responder->success($cities, CityTransformer::class)->respond();
     }
 }
