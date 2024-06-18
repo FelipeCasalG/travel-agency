@@ -4,7 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-// use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -24,7 +25,6 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
-    // use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -58,5 +58,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+     */
+    public function newFactory(): Factory
+    {
+        return UserFactory::new();
     }
 }
