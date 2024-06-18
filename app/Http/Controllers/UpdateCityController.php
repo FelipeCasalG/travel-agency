@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreCityRequest;
+use App\Models\City;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+
+class UpdateCityController extends Controller
+{
+    public function execute(StoreCityRequest $request, int $id): JsonResponse
+    {
+        try {
+            $city = City::findOrFail($id);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'City not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $city->name = $request->string('name')->toString();
+        $city->save();
+        return response()->json($city, JsonResponse::HTTP_OK);
+    }
+}
