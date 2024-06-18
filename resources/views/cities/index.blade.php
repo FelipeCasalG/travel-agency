@@ -59,7 +59,7 @@
             url: '/api/cities?page=' + page,
             success: function(response) {
                 $('tbody').html("");
-                $.each(response.cities.data, function(key, item) {
+                $.each(response.data, function(key, item) {
                     $('tbody').append(
                         '<tr>\
                             <x-table-main-data>' + item.id + '</x-main-table-data>\
@@ -76,23 +76,22 @@
 
                 // Update pagination links
                 $('#pagination').html('');
-                if (response.cities.prev_page_url || response.cities.next_page_url) {
+                if (response.pagination) {
                     $('#pagination').append(
                         '<nav class="flex items-center justify-between border-t border-gray-200 px-4 py-3 sm:px-6"\
                                 aria-label="Pagination">\
                                 <div class="hidden sm:block">\
-                                    <p class="text-sm text-gray-700">Showing<span class="font-medium"> ' + response.cities.from + ' \
-                                        </span>to<span class="font-medium"> ' + response.cities.to + ' \
-                                        </span>of<span class="font-medium"> ' + response.cities.total + ' \
-                                        </span>results</p>\
+                                    <p class="text-sm text-gray-700">Showing page<span class="font-medium"> ' + response.pagination.currentPage + ' \
+                                        </span>of<span class="font-medium"> ' + response.pagination.totalPages + ' \
+                                        </span></p>\
                                 </div>\
                                 <div id="paginationBtn" class="flex flex-1 justify-between sm:justify-end">\
                                 </div>\
                             </nav>'
                     );
-                    if (response.cities.prev_page_url) {
+                    if (response.pagination.currentPage > 1) {
                         $('#paginationBtn').append(
-                            '<a onclick="fetchCities(' + (response.cities.current_page - 1) +
+                            '<a onclick="fetchCities(' + (response.pagination.currentPage - 1) +
                             ')"\
                                 class="relative inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus-visible:outline-offset-0">Previous</a>'
                         );
@@ -101,9 +100,9 @@
                             '<a class="relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-gray-200 focus-visible:outline-offset-0 cursor-not-allowed">Previous</a>'
                         );
                     }
-                    if (response.cities.next_page_url) {
+                    if (response.pagination.currentPage < response.pagination.totalPages) {
                         $('#paginationBtn').append(
-                            '<a onclick="fetchCities(' + (response.cities.current_page + 1) +
+                            '<a onclick="fetchCities(' + (response.pagination.currentPage + 1) +
                             ')"\
                                 class="relative ml-3 inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-200 focus-visible:outline-offset-0">Next</a>'
                         );
