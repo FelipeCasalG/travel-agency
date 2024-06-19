@@ -8,6 +8,7 @@ use App\Http\Controllers\GetAllCitiesController;
 use App\Http\Controllers\UpdateCityController;
 
 use App\Http\Controllers\Airlines\GetAllAirlinesController;
+use App\Http\Controllers\Airlines\StoreAirlineController;
 
 Route::prefix('cities')->name('cities.')->group(function () {
     Route::get('/', GetAllCitiesController::class)->name('index');
@@ -18,4 +19,5 @@ Route::prefix('cities')->name('cities.')->group(function () {
 
 Route::prefix('airlines')->name('airlines.')->group(function () {
     Route::get('/', GetAllAirlinesController::class)->name('index');
+    Route::post('/', StoreAirlineController::class)->name('store');
 });
