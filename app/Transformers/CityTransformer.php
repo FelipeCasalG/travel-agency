@@ -10,7 +10,6 @@ class CityTransformer extends Transformer
     /**
      * Transform the City model into a generic array.
      *
-     * @param City $city
      *
      * @return array<string, mixed>
      */
