@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Airlines;
 
 use App\Models\Airline;
 use App\Transformers\AirlineTransformer;
 use Flugg\Responder\Contracts\Responder;
 use Illuminate\Http\JsonResponse;
 
-class GetAllAirlinesController extends Controller
+class GetAllAirlinesController
 {
     public function __invoke(Responder $responder): JsonResponse
     {
