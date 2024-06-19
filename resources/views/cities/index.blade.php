@@ -43,7 +43,7 @@
         </div>
         <div class="flex justify-end">
             <div class="flex-auto">
-                <x-input class="w-full" placeholder="City name..."></x-input>
+                <x-input id="cityName" class="w-full" placeholder="City name..."></x-input>
             </div>
             <div class="mt-4 sm:ml-2 sm:mt-0 flex-auto">
                 <x-button onclick="createCity()">Add city</x-button>
@@ -56,16 +56,14 @@
     let sort = null;
     let order = null;
     function fetchCities(page) {
-        url = '/api/cities?page=' + page;
-        if (sort) {
-            url += '&sort=' + sort;
-        }
-        if (order) {
-            url += '&order=' + order;
-        }
         $.ajax({
             type: 'GET',
-            url: url,
+            url: '{{ route('cities.index') }}',
+            data: {
+                page: page,
+                sort: sort,
+                order: order
+            },
             success: function(response) {
                 $('tbody').html("");
                 $.each(response.data, function(key, item) {
@@ -126,7 +124,7 @@
     }
 
     function setSorting(column) {
-        if (sort == column) {
+        if (sort === column) {
             order = order == 'asc' ? 'desc' : 'asc';
         } else {
             sort = column;
@@ -136,9 +134,11 @@
     }
 
     function deleteCity(id) {
+        let url = '{{ route('cities.destroy', ':id') }}';
+        url = url.replace(':id', id);
         $.ajax({
             type: 'DELETE',
-            url: '/api/cities/' + id,
+            url: url,
             success: function(response) {
                 fetchCities(1);
             }
@@ -146,14 +146,15 @@
     }
 
     function createCity() {
-        var name = $('input').val();
+        var name = $('#cityName').val();
         $.ajax({
             type: 'POST',
-            url: '/api/cities',
+            url: '{{ route('cities.store') }}',
             data: {
                 name: name
             },
             success: function(response) {
+                $('#cityName').val('');
                 fetchCities(1);
             }
         });

@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
 {
-    protected $fillable = ['name'];
+    protected $guarded = ['id'];
 
     /**
      * Get the factory instance for the model.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\City>
      */
-    public function newFactory(): Factory
+    public static function newFactory(): Factory
     {
-        return new CityFactory();
+        return CityFactory::new();
     }
 }

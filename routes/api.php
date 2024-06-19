@@ -6,7 +6,9 @@ use App\Http\Controllers\DestroyCityController;
 use App\Http\Controllers\GetAllCitiesController;
 use App\Http\Controllers\UpdateCityController;
 
-Route::get('/cities', GetAllCitiesController::class);
-Route::post('/cities', CreateCityController::class);
-Route::patch('/cities/{id}', UpdateCityController::class);
-Route::delete('/cities/{id}', DestroyCityController::class);
+Route::prefix('cities')->name('cities.')->group(function () {
+    Route::get('/', GetAllCitiesController::class)->name('index');
+    Route::post('/', CreateCityController::class)->name('store');
+    Route::put('/{id}', UpdateCityController::class)->name('update');
+    Route::delete('/{id}', DestroyCityController::class)->name('destroy');
+});
