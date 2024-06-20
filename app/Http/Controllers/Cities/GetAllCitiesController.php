@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cities;
 
 use App\Models\City;
 use App\Transformers\CityTransformer;
@@ -9,7 +9,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class GetAllCitiesController extends Controller
+class GetAllCitiesController
 {
     public function __invoke(Request $request, Responder $responder): JsonResponse
     {

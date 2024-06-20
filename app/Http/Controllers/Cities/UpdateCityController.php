@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cities;
 
 use App\Http\Requests\StoreCityRequest;
 use App\Models\City;
@@ -9,7 +9,7 @@ use Flugg\Responder\Contracts\Responder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
-class UpdateCityController extends Controller
+class UpdateCityController
 {
     public function __invoke(StoreCityRequest $request, int $id, Responder $responder): JsonResponse
     {

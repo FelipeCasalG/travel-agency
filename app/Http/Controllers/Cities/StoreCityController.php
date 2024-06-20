@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cities;
 
 use App\Http\Requests\StoreCityRequest;
 use App\Models\City;
@@ -8,7 +8,7 @@ use App\Transformers\CityTransformer;
 use Flugg\Responder\Contracts\Responder;
 use Illuminate\Http\JsonResponse;
 
-class CreateCityController extends Controller
+class StoreCityController
 {
     public function __invoke(StoreCityRequest $request, Responder $responder): JsonResponse
     {

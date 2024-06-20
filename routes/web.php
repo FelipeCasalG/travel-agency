@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\ViewCitiesController;
+use App\Http\Controllers\Cities\ViewCitiesController;
 
 Route::view('/', 'dashboard');
 
