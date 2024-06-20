@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('airlines', function (Blueprint $table) {
+        Schema::create('airline_city', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('description');
+            $table->foreignIdFor(\App\Models\Airline::class, 'airline_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\City::class, 'city_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('airlines');
+        Schema::dropIfExists('airline_city');
     }
 };

@@ -12,6 +12,9 @@ class GetAllAirlinesController
     public function __invoke(Responder $responder): JsonResponse
     {
         $airlines = Airline::paginate(8);
-        return $responder->success($airlines, new AirlineTransformer())->respond();
+
+        return $responder
+            ->success($airlines, AirlineTransformer::class)
+            ->respond();
     }
 }

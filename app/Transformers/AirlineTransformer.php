@@ -16,9 +16,9 @@ class AirlineTransformer extends Transformer
     public function transform(Airline $airline): array
     {
         return [
-            'id' => (int) $airline->id,
-            'name' => (string) $airline->name,
-            'description' => (string) $airline->description,
+            'id' => $airline->id,
+            'name' => $airline->name,
+            'description' => $airline->description,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Airline;
 use App\Models\City;
 use Database\Factories\AirlineFactory;
 use Database\Factories\CityFactory;
@@ -17,11 +18,10 @@ class CitySeeder extends Seeder
     {
         $cities = CityFactory::times(30)->create();
 
-        $airlines = AirlineFactory::times(5)->create();
-
-        foreach ($cities as $city) {
-            $randomAirlines = $airlines->random(rand(1, 3))->pluck('id');
-            $city->airlines()->attach($randomAirlines);
-        }
+        AirlineFactory::times(5)
+            ->create()
+            ->each(function (Airline $airline) use ($cities) {
+                $airline->cities()->attach($cities->random(3));
+            });
     }
 }

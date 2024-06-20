@@ -12,11 +12,10 @@ class StoreAirlineController
 {
     public function __invoke(StoreAirlineRequest $request, Responder $responder): JsonResponse
     {
-        $airline = Airline::create([
-            'name' => $request->string('name')->toString(),
-            'description' => $request->string('description')->toString(),
-        ]);
+        $airline = Airline::create($request->validated());
 
-        return $responder->success($airline, new AirlineTransformer())->respond();
+        return $responder
+            ->success($airline, AirlineTransformer::class)
+            ->respond(JsonResponse::HTTP_CREATED);
     }
 }
