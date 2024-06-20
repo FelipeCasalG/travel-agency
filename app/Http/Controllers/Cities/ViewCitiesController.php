@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cities;
 
 use Illuminate\Contracts\View\View;
 
-class ViewCitiesController extends Controller
+class ViewCitiesController
 {
     public function __invoke(): View
     {
