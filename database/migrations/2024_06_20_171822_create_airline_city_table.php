@@ -13,8 +13,14 @@ return new class extends Migration
     {
         Schema::create('airline_city', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Airline::class, 'airline_id')->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(\App\Models\City::class, 'city_id')->constrained()->cascadeOnDelete();
+            $table
+                ->foreignIdFor(Airline::class)
+                ->constrained()
+                ->cascadeOnDelete();
+            $table
+                ->foreignIdFor(City::class)
+                ->constrained()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
